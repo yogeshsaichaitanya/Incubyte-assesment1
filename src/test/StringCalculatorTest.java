@@ -1,6 +1,7 @@
 package test;
 
 import main.StringCalculator;
+import main.exceptions.NegativeNumberException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,6 +59,33 @@ public class StringCalculatorTest {
     @Test
     public void delimiterWithVaryingLength() {
         String numbers = "/[***]\\n1***2***3";
+        int expected = 6;
+
+        int actual = stringCalculator.add(numbers);
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test(expected = NegativeNumberException.class)
+    public void numbersWithNegativeValuesShouldThrowException() {
+        String numbers = "/[***]\\n1***2***-3";
+
+        int actual = stringCalculator.add(numbers);
+    }
+
+    @Test()
+    public void numbersContainsNegativeSignButShouldBeNeglected() {
+        String numbers = "/[***]\\n1***2***-*3";
+        int expected = 6;
+
+        int actual = stringCalculator.add(numbers);
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test()
+    public void numbersContainsConsecutiveEvenNumberOfNegativeSignsButShouldBeTreatedAsPositive() {
+        String numbers = "/[***]\\n1***2***--3";
         int expected = 6;
 
         int actual = stringCalculator.add(numbers);
