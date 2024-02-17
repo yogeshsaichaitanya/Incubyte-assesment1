@@ -34,4 +34,34 @@ public class StringCalculatorTest {
 
         Assert.assertEquals(expected, actual);
     }
+
+    @Test
+    public void comaSeparatedWithSpacesInBetween() {
+        String numbers = "1, 2 , 3";
+        int expected = 6;
+
+        int actual = stringCalculator.add(numbers);
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void changeDelimiter() {
+        String numbers = "//;\\n1;2";
+        int expected = 3;
+
+        int actual = stringCalculator.add(numbers);
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void delimiterWithVaryingLength() {
+        String numbers = "/[***]\\n1***2***3";
+        int expected = 6;
+
+        int actual = stringCalculator.add(numbers);
+
+        Assert.assertEquals(expected, actual);
+    }
 }
