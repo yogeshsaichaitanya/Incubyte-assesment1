@@ -66,9 +66,26 @@ public class StringCalculatorTest {
         Assert.assertEquals(expected, actual);
     }
 
+    @Test
+    public void numbersWithMultipleDelimiters() {
+        String numbers = "//[*][%]\\n1*2%3";
+        int expected = 6;
+
+        int actual = stringCalculator.add(numbers);
+
+        Assert.assertEquals(expected, actual);
+    }
+
     @Test(expected = NegativeNumberException.class)
     public void numbersWithNegativeValuesShouldThrowException() {
         String numbers = "/[***]\\n1***2***-3";
+
+        int actual = stringCalculator.add(numbers);
+    }
+
+    @Test(expected = NegativeNumberException.class)
+    public void numbersWithMultipleNegativeValuesShouldThrowException() {
+        String numbers = "/[***]\\n1***2***-3;<-4@-6";
 
         int actual = stringCalculator.add(numbers);
     }
@@ -91,5 +108,29 @@ public class StringCalculatorTest {
         int actual = stringCalculator.add(numbers);
 
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void numbersWithMultipleFormsOfNegativeNumbers() {
+        String numbers = "/-%--5[***]\\n1***--2-***-*3#@6";
+        int expected = 17;
+
+        int actual = stringCalculator.add(numbers);
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test(expected = NegativeNumberException.class)
+    public void numbersWithMultipleFormsOfNegativeNumbersButContainsSingleNegativeNumber_shouldThrowException() {
+        String numbers = "/-%--5[***]\\n1***--2-***-*-3#@6";
+
+        int actual = stringCalculator.add(numbers);
+    }
+
+    @Test(expected = NegativeNumberException.class)
+    public void numbersWithMultipleFormsOfNegativeNumbersButContainsMultipleNegativeNumber_shouldThrowException() {
+        String numbers = "/-%---5[***]\\n1***--2-***-*-3#@-6";
+
+        int actual = stringCalculator.add(numbers);
     }
 }
